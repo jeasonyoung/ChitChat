@@ -1,0 +1,1 @@
+https://github.com/sausheong/gwp/blob/master/Chapter_2_Go_ChitChat/chitchat/route_auth.go
