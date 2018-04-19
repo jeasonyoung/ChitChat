@@ -1,8 +1,8 @@
-package main
+package ChitChat
 
 import (
 	"net/http"
-	"github.com/jeasonyoung/ChitChat/src/data"
+	"github.com/jeasonyoung/ChitChat/data"
 	"fmt"
 )
 
