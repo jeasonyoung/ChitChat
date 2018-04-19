@@ -1,20 +1,20 @@
 package data
 
 import (
+	"crypto/rand"
+	"crypto/sha1"
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
-	"crypto/rand"
-	"fmt"
-	"crypto/sha1"
 )
 
 var Db *sql.DB
 
 //init
-func init(){
+func init() {
 	var err error
-	if Db,err = sql.Open("mysql", "root:root@tcp(120.78.209.83:3306)/chitchat?charset=utf8"); err != nil {
+	if Db, err = sql.Open("mysql", "root:root@tcp(120.78.209.83:3306)/chitchat?charset=utf8"); err != nil {
 		log.Fatal(err)
 	}
 	return
@@ -22,7 +22,7 @@ func init(){
 
 //create a random UUID with from RFC 4122
 //adapted from http://github.com/nu7hatch/gouuid
-func createUUID()(uuid string){
+func createUUID() (uuid string) {
 	u := new([16]byte)
 	if _, err := rand.Read(u[:]); err != nil {
 		log.Fatalln("Cannot generate UUID ", err)
@@ -36,7 +36,7 @@ func createUUID()(uuid string){
 	return
 }
 
-func Encrypt(plaintext string)(cryptext string){
+func Encrypt(plaintext string) (cryptext string) {
 	cryptext = fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))
 	return
 }

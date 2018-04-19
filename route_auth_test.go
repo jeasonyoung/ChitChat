@@ -1,10 +1,10 @@
 package main
 
 import (
-	"testing"
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"testing"
 )
 
 func Test_Get_Login(t *testing.T) {

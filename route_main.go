@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"github.com/jeasonyoung/ChitChat/data"
+	"net/http"
 )
 
 //GET /err?msg=

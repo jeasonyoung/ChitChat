@@ -13,7 +13,7 @@ import (
 )
 
 type Configuration struct {
-	Address 	 string
+	Address      string
 	ReadTimeout  int64
 	WriteTimeout int64
 	Static       string
@@ -25,11 +25,11 @@ var logger *log.Logger
 func init() {
 	loadConfig()
 	//
-	file, err := os.OpenFile("chitchat.log", os.O_CREATE | os.O_WRONLY | os.O_APPEND, 0666)
+	file, err := os.OpenFile("chitchat.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalln("Failed to open log file ", err)
 	}
-	logger = log.New(file, "INFO ", log.Ldate | log.Ltime | log.Lshortfile)
+	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
 // Convenience function for printing to stdout
@@ -38,7 +38,7 @@ func p(a ...interface{}) {
 }
 
 //
-func loadConfig(){
+func loadConfig() {
 	file, err := os.Open("config.json")
 	if err != nil {
 		log.Fatalln("Cannot open config file ", err)
@@ -57,9 +57,9 @@ func error_message(writer http.ResponseWriter, request *http.Request, msg string
 }
 
 //Checks if the user is logged in and has a session,if not err is not nil
-func session(writer http.ResponseWriter, request *http.Request)(sess data.Session, err error) {
+func session(writer http.ResponseWriter, request *http.Request) (sess data.Session, err error) {
 	if cookie, err := request.Cookie("_cookie"); err == nil {
-		sess = data.Session{ Uuid:cookie.Value }
+		sess = data.Session{Uuid: cookie.Value}
 		if ok, _ := sess.Check(); !ok {
 			err = errors.New("Invalid session")
 		}
@@ -78,7 +78,7 @@ func parseTemplateFiles(filenames ...string) (t *template.Template) {
 	return
 }
 
-func generateHTML(writer http.ResponseWriter,data interface{},filenames ...string) {
+func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...string) {
 	var files []string
 	for _, file := range filenames {
 		files = append(files, fmt.Sprintf("template/%s.html", file))

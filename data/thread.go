@@ -3,11 +3,11 @@ package data
 import "time"
 
 type Thread struct {
-	Id  		int
-	Uuid 		string
-	Topic		string
-	UserId  	int
-	CreatedAt 	time.Time
+	Id        int
+	Uuid      string
+	Topic     string
+	UserId    int
+	CreatedAt time.Time
 }
 
 //format the CreatedAt date to display nicely on the screen.
@@ -16,7 +16,7 @@ func (thread *Thread) CreatedAtDate() string {
 }
 
 //get the number of posts in a thread
-func (thread *Thread) NumReplies()(count int) {
+func (thread *Thread) NumReplies() (count int) {
 	rows, err := Db.Query("select count(*) from posts where thread_id = $1", thread.Id)
 	if err != nil {
 		return
@@ -31,14 +31,14 @@ func (thread *Thread) NumReplies()(count int) {
 }
 
 //get posts to a thread
-func (thread *Thread) Posts()(posts []Post, err error){
+func (thread *Thread) Posts() (posts []Post, err error) {
 	rows, err := Db.Query("select id,uuid,body,user_id,thread_id,created_at from posts where thread_id = $1", thread.Id)
 	if err != nil {
 		return
 	}
 	for rows.Next() {
 		post := Post{}
-		if err = rows.Scan(&post.Id,&post.Uuid,&post.Body,&post.UserId,&post.ThreadId,&post.CreatedAt); err != nil {
+		if err = rows.Scan(&post.Id, &post.Uuid, &post.Body, &post.UserId, &post.ThreadId, &post.CreatedAt); err != nil {
 			return
 		}
 		posts = append(posts, post)
@@ -48,7 +48,7 @@ func (thread *Thread) Posts()(posts []Post, err error){
 }
 
 //Create a new thread
-func (user *User) CreateThread(topic string) (conv Thread,err error) {
+func (user *User) CreateThread(topic string) (conv Thread, err error) {
 	statement := "insert into threads(uuid,topic,user_id,created_at) values($1,$2,$3,$4) returning id,uuid,topic,user_id,created_at"
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
@@ -62,7 +62,7 @@ func (user *User) CreateThread(topic string) (conv Thread,err error) {
 }
 
 //Create a new post to a thread
-func (user *User) CreatePost(conv Thread,body string) (post Post, err error) {
+func (user *User) CreatePost(conv Thread, body string) (post Post, err error) {
 	statement := "insert into posts(uuid,body,user_id,thread_id,created_at) values ($1,$2,$3,$4,$5) returning id,uuid,body,user_id,thread_id,created_at"
 	stmt, err := Db.Prepare(statement)
 	if err != nil {
@@ -76,7 +76,7 @@ func (user *User) CreatePost(conv Thread,body string) (post Post, err error) {
 }
 
 //Get all threads in the database and returns it
-func Threads() (threads []Thread, err error){
+func Threads() (threads []Thread, err error) {
 	rows, err := Db.Query("select id,uuid,topic,user_id,created_at from threads order by created_at desc")
 	if err != nil {
 		return
@@ -96,7 +96,7 @@ func Threads() (threads []Thread, err error){
 func ThreadByUUID(uuid string) (conv Thread, err error) {
 	conv = Thread{}
 	err = Db.QueryRow("select id,uuid,topic,user_id,created_at from threads where uuid = $1", uuid).Scan(
-		&conv.Id,&conv.Uuid,&conv.Topic,&conv.UserId,&conv.CreatedAt)
+		&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt)
 	return
 }
 
@@ -104,17 +104,17 @@ func ThreadByUUID(uuid string) (conv Thread, err error) {
 func (thread *Thread) User() (user User) {
 	user = User{}
 	Db.QueryRow("select id,uuid,name,email,created_at from users where id = $1", thread.UserId).Scan(
-		&user.Id,&user.Uuid,&user.Name,&user.Email,&user.CreatedAt)
+		&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
 
 type Post struct {
-	Id 			int
-	Uuid 		string
-	Body 		string
-	UserId 		int
-	ThreadId	int
-	CreatedAt	time.Time
+	Id        int
+	Uuid      string
+	Body      string
+	UserId    int
+	ThreadId  int
+	CreatedAt time.Time
 }
 
 //format the CreatedAt date to display nicely on the screen.
@@ -126,7 +126,6 @@ func (post *Post) CreatedAtDate() string {
 func (post *Post) User() (user User) {
 	user = User{}
 	Db.QueryRow("select id,uuid,name,email,created_at from users where id = $1", post.UserId).Scan(
-		&user.Id,&user.Uuid,&user.Name,&user.Email,&user.CreatedAt)
+		&user.Id, &user.Uuid, &user.Name, &user.Email, &user.CreatedAt)
 	return
 }
-

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"github.com/jeasonyoung/ChitChat/data"
+	"net/http"
 )
 
 //GET /login
@@ -25,9 +25,9 @@ func signupAccount(writer http.ResponseWriter, request *http.Request) {
 		danger(err, "Cannot parse form.")
 	}
 	user := data.User{
-		Name: 		request.PostFormValue("name"),
-		Email: 		request.PostFormValue("email"),
-		Password:	request.PostFormValue("password"),
+		Name:     request.PostFormValue("name"),
+		Email:    request.PostFormValue("email"),
+		Password: request.PostFormValue("password"),
 	}
 	if err := user.Create(); err != nil {
 		danger(err, "Cannot create user.")
@@ -49,9 +49,9 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 			danger(err, "Cannot create session.")
 		}
 		cookie := http.Cookie{
-			Name: 		"_cookie",
-			Value: 		session.Uuid,
-			HttpOnly:	true,
+			Name:     "_cookie",
+			Value:    session.Uuid,
+			HttpOnly: true,
 		}
 		http.SetCookie(writer, &cookie)
 		http.Redirect(writer, request, "/", 302)
@@ -65,9 +65,8 @@ func authenticate(writer http.ResponseWriter, request *http.Request) {
 func logout(writer http.ResponseWriter, request *http.Request) {
 	if cookie, err := request.Cookie("_cookie"); err != nil {
 		warning(err, "Failed to get cookie.")
-		session := data.Session{ Uuid: cookie.Value }
+		session := data.Session{Uuid: cookie.Value}
 		session.DeleteByUUID()
 	}
 	http.Redirect(writer, request, "/", 302)
 }
-

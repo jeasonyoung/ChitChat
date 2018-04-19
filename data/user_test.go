@@ -1,8 +1,8 @@
 package data
 
 import (
-	"testing"
 	"database/sql"
+	"testing"
 )
 
 func Test_UserCreate(t *testing.T) {
