@@ -1,4 +1,4 @@
-package ChitChat
+package main
 
 import (
 	"net/http"
