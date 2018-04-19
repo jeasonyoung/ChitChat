@@ -14,7 +14,7 @@ var Db *sql.DB
 //init
 func init() {
 	var err error
-	if Db, err = sql.Open("mysql", "root:root@tcp(120.78.209.83:3306)/chitchat?charset=utf8"); err != nil {
+	if Db, err = sql.Open("mysql", "root:P@ssw0rd@tcp(120.78.209.83:3306)/chitchat?charset=utf8"); err != nil {
 		log.Fatal(err)
 	}
 	return
